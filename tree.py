@@ -28,7 +28,7 @@ class Tree():
     def addChildToCurrent(self, leaf:object) -> None:
         leaf.parent = self.current
         self.current.children.append(leaf)
-        print("Appended", leaf.name, "to", self.current.name)
+        # print("Appended", leaf.name, "to", self.current.name)
 
 
     def findNode(self, node, current = None) -> object:
@@ -37,7 +37,7 @@ class Tree():
         if current == None:
             current = self.root
         if current == node:
-            print(f"{node.name}, found")
+            # print(f"{node.name}, found")
             self.current = current
             return
         elif len(current.children) == 0:
@@ -77,6 +77,8 @@ class Tree():
     
     def printFileStructure(self, desiredStart = None):
 
+        #it's wrong i need to figure out for it to print all the children of a node at once like a 
+
         if desiredStart != None:
             root = desiredStart
         else:
@@ -94,9 +96,42 @@ class Tree():
                 child_indentation = parent_indentation + ("│  " if i < len(node.children) - 1 else "   ") + "└─"
                 queue.put((child, child_indentation))
 
-# Example usage
+    def printChildren(self, parentNode, parentIndentation):
+        if parentNode.children == None:
+            pass
+    def printRealFileStructure(self, indentation = 0, desiredStart = None):
 
-    
+        if desiredStart == None:
+            start = self.root
+        else:
+            start = desiredStart
+
+        if indentation == 0:
+            print(start.name)
+        else:
+            print(" " * indentation + "└─" + start.name)
+
+        indentation += 2
+
+        if start.children:
+            for child in start.children:
+                self.printRealFileStructure(indentation, child)
+        else:
+            return None
+
+        # '''
+        # print root first
+        # print first child with indentation
+        #     check if child has children if so print it's childrens and so on
+        # print second child
+        # '''
+        # '''
+        # print root 
+        # check if it has children
+        # if it has children take it's identation 
+        # and rescursively calling it self until no children are left
+        # '''
+
 
 
 def main():
@@ -119,9 +154,9 @@ def main():
     
     #tree.printCurrentChildren() 
     
-    tree.printLevelOrderTraversal()
-    tree.printFileStructure()
-
+    # tree.printLevelOrderTraversal()
+    # tree.printFileStructure()
+    tree.printRealFileStructure()
     #tree.insertNode(node1,node2)
     #tree.findNode(node2)
     #tree.printTree()
