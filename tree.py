@@ -1,4 +1,5 @@
 from queue import Queue
+import json
 
 class TreeNode():
     name = None
@@ -9,12 +10,31 @@ class TreeNode():
         self.name = name
         self.children = []
 
+    def toDict(self):
+        if self.parent != None:
+            nodeDict = {
+                "name":self.name,
+                "data":self.data,
+                "parent":self.parent.name,
+                "children":[child.toDict() for child in self.children]
+            }
+        else:
+            nodeDict = {
+                "name":self.name,
+                "data":self.data,
+                "parent":None,
+                "children":[child.toDict() for child in self.children]
+            }
+
+        return nodeDict
+
 
 #basic tree structure for practice
 class Tree():
     root = None
-    maxDepth = 0
     current = None
+    depth = 0
+    height = 0
 
     def __init__(self, treeNode:object) -> None:
         if self.root == None:
@@ -37,7 +57,6 @@ class Tree():
         if self.current == node:
             return None
         
-
         if current == None:
             current = self.root
         if current == node:
@@ -78,33 +97,8 @@ class Tree():
                 for child in node.children:
                     q.put(child)
             print()
-    
-    def printFileStructure(self, desiredStart = None):
 
-        #it's wrong i need to figure out for it to print all the children of a node at once like a 
-
-        if desiredStart != None:
-            root = desiredStart
-        else:
-            root = self.root
-
-        queue = Queue()
-        queue.put((root, ""))  # Tuple containing node and its indentation string
-        
-        while not queue.empty():
-            node, parent_indentation = queue.get()
-            print(parent_indentation + "└─" + str(node.name))  # Add indentation and arrow
-            
-            # Enqueue children of the current node with incremented indentation
-            for i, child in enumerate(node.children):
-                child_indentation = parent_indentation + ("│  " if i < len(node.children) - 1 else "   ") + "└─"
-                queue.put((child, child_indentation))
-
-    def printChildren(self, parentNode, parentIndentation):
-        if parentNode.children == None:
-            pass
-
-    def printRealFileStructure(self, indentation = 0, desiredStart = None):
+    def printRealFileStructure(self, desiredStart = None, indentation = 0):
 
         if desiredStart == None:
             start = self.root
@@ -120,7 +114,7 @@ class Tree():
 
         if start.children:
             for child in start.children:
-                self.printRealFileStructure(indentation, child)
+                self.printRealFileStructure(child, indentation)
         else:
             return None
         
@@ -137,6 +131,21 @@ class Tree():
                 if child.name == desiredNode.name:
                     print("deleting child from parent")
                     self.current.children.pop(i)
+
+    def getTreeDimensions(self, current = None):
+
+        if current == None:
+            current = self.root
+
+        if len(current.children) == 0:
+            return 1
+        else:
+            self.depth += 1
+            for child in current.children:
+                result = self.getTreeDimensions(child)
+                if result != None:
+                    self.height += result
+        
 
 
 
@@ -157,13 +166,24 @@ def main():
     tree.insertNode(node1,node4)
     tree.insertNode(node2,node5)
     tree.insertNode(node2,node6)
-    tree.deleteNode(node6)
+    # tree.deleteNode(node2)
+    # tree.deleteNode(node6)
+
+    tree.getTreeDimensions()
+    print(tree.depth)
+    print(tree.height)
+
+    rootDict = base.toDict()
+    print(rootDict)
+    jsonString = json.dumps(rootDict, indent=2)
+    with open("tree.json", "w") as jsonFile:
+        jsonFile.write(jsonString)
     
     #tree.printCurrentChildren() 
     
     # tree.printLevelOrderTraversal()
     # tree.printFileStructure()
-    tree.printRealFileStructure()
+    # tree.printRealFileStructure()
     #tree.insertNode(node1,node2)
     #tree.findNode(node2)
     #tree.printTree()

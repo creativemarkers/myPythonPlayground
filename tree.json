@@ -1,0 +1,45 @@
+{
+  "name": "base",
+  "data": null,
+  "parent": null,
+  "children": [
+    {
+      "name": "node1",
+      "data": null,
+      "parent": "base",
+      "children": [
+        {
+          "name": "node3",
+          "data": null,
+          "parent": "node1",
+          "children": []
+        },
+        {
+          "name": "node4",
+          "data": null,
+          "parent": "node1",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "node2",
+      "data": null,
+      "parent": "base",
+      "children": [
+        {
+          "name": "node5",
+          "data": null,
+          "parent": "node2",
+          "children": []
+        },
+        {
+          "name": "node6",
+          "data": null,
+          "parent": "node2",
+          "children": []
+        }
+      ]
+    }
+  ]
+}
