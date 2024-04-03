@@ -34,6 +34,10 @@ class Tree():
     def findNode(self, node, current = None) -> object:
         #make sure to change current to desired node to start search
         #my recursion is fucked
+        if self.current == node:
+            return None
+        
+
         if current == None:
             current = self.root
         if current == node:
@@ -99,6 +103,7 @@ class Tree():
     def printChildren(self, parentNode, parentIndentation):
         if parentNode.children == None:
             pass
+
     def printRealFileStructure(self, indentation = 0, desiredStart = None):
 
         if desiredStart == None:
@@ -111,26 +116,27 @@ class Tree():
         else:
             print(" " * indentation + "└─" + start.name)
 
-        indentation += 2
+        indentation += 3
 
         if start.children:
             for child in start.children:
                 self.printRealFileStructure(indentation, child)
         else:
             return None
+        
+    def deleteNode(self, desiredNode):
 
-        # '''
-        # print root first
-        # print first child with indentation
-        #     check if child has children if so print it's childrens and so on
-        # print second child
-        # '''
-        # '''
-        # print root 
-        # check if it has children
-        # if it has children take it's identation 
-        # and rescursively calling it self until no children are left
-        # '''
+        self.findNode(desiredNode)
+
+        if len(self.current.children) > 0:
+            print(f"Unable to delete {desiredNode.name} since it has children")
+        else:
+            self.current = desiredNode.parent
+
+            for i, child in enumerate(self.current.children):
+                if child.name == desiredNode.name:
+                    print("deleting child from parent")
+                    self.current.children.pop(i)
 
 
 
@@ -151,6 +157,7 @@ def main():
     tree.insertNode(node1,node4)
     tree.insertNode(node2,node5)
     tree.insertNode(node2,node6)
+    tree.deleteNode(node6)
     
     #tree.printCurrentChildren() 
     
