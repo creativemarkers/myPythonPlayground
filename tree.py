@@ -52,8 +52,6 @@ class Tree():
 
 
     def findNode(self, node, current = None) -> object:
-        #make sure to change current to desired node to start search
-        #my recursion is fucked
         if self.current == node:
             return None
         
@@ -68,6 +66,40 @@ class Tree():
         else:
             for child in current.children:
                 self.findNode(node, child)
+
+    def findNodeDFS(self, target):
+        #according to chat gpt nodes are given a visited variable instead of using an array to store the visited
+        visited = []
+        current = self.root
+
+        while current:
+            visited.append(current)
+            if current == target:
+                return current
+            else:
+                lastCurrent = current
+                for child in current.children:
+                    if child not in visited:
+                        current = child
+                        break
+                if lastCurrent == current:
+                    current = current.parent
+
+    def gptDFS(self, target):
+        #gpt suggested corrections to my dfs algorithm
+        visited = set()
+        stack = [self.root]
+
+        while stack:
+            current = stack.pop()
+            if current.name == target.name:
+                return current
+            visited.add(current)
+            for child in current.children:
+                if child not in visited:
+                    stack.append(child)
+        return None
+    
 
     def insertNode(self, parentNode: object, child:object):
 
@@ -159,6 +191,7 @@ def main():
     node4 = TreeNode("node4")
     node5 = TreeNode("node5")
     node6 = TreeNode("node6")
+    node7 = TreeNode("node7")
     
     tree.insertNode(base,node1)
     tree.insertNode(base,node2)
@@ -169,15 +202,21 @@ def main():
     # tree.deleteNode(node2)
     # tree.deleteNode(node6)
 
-    tree.getTreeDimensions()
-    print(tree.depth)
-    print(tree.height)
+    # tree.getTreeDimensions()
+    # print(tree.depth)
+    # print(tree.height)
 
-    rootDict = base.toDict()
-    print(rootDict)
-    jsonString = json.dumps(rootDict, indent=2)
-    with open("tree.json", "w") as jsonFile:
-        jsonFile.write(jsonString)
+    # rootDict = base.toDict()
+    # print(rootDict)
+    # jsonString = json.dumps(rootDict, indent=2)
+    # with open("tree.json", "w") as jsonFile:
+    #     jsonFile.write(jsonString)
+
+    # result = tree.findNodeDFS(node6)
+    # print(result)
+
+    result = tree.gptDFS(node7)
+    print(result)
     
     #tree.printCurrentChildren() 
     
