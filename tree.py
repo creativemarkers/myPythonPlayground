@@ -25,7 +25,6 @@ class TreeNode():
                 "parent":None,
                 "children":[child.toDict() for child in self.children]
             }
-
         return nodeDict
 
 
@@ -68,7 +67,6 @@ class Tree():
                 self.findNode(node, child)
 
     def findNodeDFS(self, target):
-        #according to chat gpt nodes are given a visited variable instead of using an array to store the visited
         visited = []
         current = self.root
 
@@ -92,6 +90,7 @@ class Tree():
 
         while stack:
             current = stack.pop()
+            #print(current.name)
             if current.name == target.name:
                 return current
             visited.add(current)
