@@ -1,66 +1,88 @@
 class GraphNode():
-    
-    def __init__(self, name):
+    def __init__(self,name) -> None:
         self.name = name
-        self.neighbors = {}
         self.data = None
 
     def __repr__(self) -> str:
-        return f"Object: {self.name}"
+        return f"{self.name}"
     
-    def addNeighbor(self,node,distance):
-        print(f"adding {node}, to {self.name}")
-        self.neighbors[node] = distance
-
-class Graph():
-
-    nodes = []
-    current = None
-    shortestPath = None
-    memo = []
+class DirectedGraph():
 
     def __init__(self):
-        
-        # self.current = node
-        # self.nodes.append[node]
-        pass
+        self.adjacencyList = {}
 
-    def connectNewNeighbors(self, node1, node2, distance):
+    def addNode(self,node):
+        if node not in self.adjacencyList:
+            print(f"adding {node}, to adjancy list keys...")
+            self.adjacencyList[node] = []
+        else:
+            print(f"{node}, already in graph")
 
-        if node1 not in self.nodes:
-            self.nodes.append(node1)
-        if node2 not in self.nodes:
-            self.nodes.append(node2)
+    def addEdge(self,parentNode:object, edgeList:list):
+        if parentNode in self.adjacencyList:
+            for node in edgeList:
+                if node not in self.adjacencyList[parentNode]:
+                    print(f"adding {node} to {parentNode}'s edges")
+                    self.adjacencyList[parentNode].append(node)
+                else:
+                    print(f"{node}, already in {parentNode} adjacency list.")
+        else:
+            print(f"{parentNode} not in graph, please add it to graph first.")
 
-        node1.addNeighbor(node2, distance)
-        node2.addNeighbor(node1, distance)
+    def depthFirstTraversal(self, startNode):
+        #use a stack
+        visited = set()
+        stack = [startNode]
+        while stack:
+            current = stack.pop()
+            if current not in visited:
+                visited.add(current)
+                neighbors = self.adjacencyList[current]
+            print(current)
+            for edge in reversed(neighbors):
+                if edge not in visited:
+                    stack.append(edge)
+        return None
 
-    def changeCurrent(self, node):
-        if node not in self.nodes:
-            self.nodes.append(node)
 
-        self.current = node
-
-    def shortestPathFromCurrent(self, end):
-        tempShortestNode = None
-        tempShortestDist = None
-        for node, dist in self.current.neighbors.items():
-            print(i, j)
-            if tempShortestDist == None or dist < 
-            
 def main():
-    graph = Graph()
-    nodeA = GraphNode("node A")
-    nodeB = GraphNode("node B")
-    nodeC = GraphNode("node C")
-    nodeD = GraphNode("node D")
-    graph.connectNewNeighbors(nodeA,nodeB,5)
-    graph.connectNewNeighbors(nodeB,nodeC,7)
-    graph.connectNewNeighbors(nodeC,nodeA,2)
-    graph.connectNewNeighbors(nodeB,nodeD,4)
-    graph.connectNewNeighbors(nodeC,nodeD,3)
-    graph.changeCurrent(nodeA)
-    graph.shortestPathFromCurrent(nodeD)
+
+    dGraph = DirectedGraph()
+
+    alphabet = ["a","b","c","d","e","f"]
+    nodeList = []
+    
+    for letter in alphabet:
+        node = GraphNode(name=letter)
+        nodeList.append(node)
+
+    for node in nodeList:
+        dGraph.addNode(node)
+
+    aEdges = [nodeList[1],nodeList[2]]
+    bEdges = [nodeList[3]]
+    cEdges = [nodeList[4]]
+    eEdges = [nodeList[1]]
+    fEdges = [nodeList[3]]
+    #adding edges to a
+    dGraph.addEdge(nodeList[0],aEdges)
+    #adding edge to b
+    dGraph.addEdge(nodeList[1],bEdges)
+    #adding edge to c
+    dGraph.addEdge(nodeList[2],cEdges)
+    #adding edge to e
+    dGraph.addEdge(nodeList[4],eEdges)
+    #adding edge to f
+    dGraph.addEdge(nodeList[5],fEdges)
+
+    #dGraph.depthFirstTraversal(nodeList[0])
+
+
+    print(dGraph.adjacencyList)
+
+
+
+
 
 
 
