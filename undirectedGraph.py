@@ -19,6 +19,7 @@ class Graph():
     shortestPath = None
     shortestNodes = None
     memo = []
+    visited = []
 
     def __init__(self):
         
@@ -43,10 +44,9 @@ class Graph():
         self.current = node
 
     def shortestPathFromCurrent(self, end, current = None, nodesVisitedSofar = None, distancedTraveledSoFar = 0):
-
         if current == None:
             current = self.current
-        
+        print(current)
         if current == end:
             return nodesVisitedSofar, distancedTraveledSoFar
         
@@ -62,7 +62,28 @@ class Graph():
             if self.shortestPath == None or distancedTraveledSoFar < self.shortestPath:
                 self.shortestPath = distancedTraveledSoFar
                 self.shortestNodes = nodesVisitedSofar
+        
+        return None, None
+    
+    def distanceTo(self,current,end,distanceTraveled = 0):
+        print("current:", current)
+        if current == end:
+            return distanceTraveled
+        
+        self.visited.append(current)
+        
+        for neighbor,dist in current.neighbors.items():
+            print(neighbor,dist)
+            if neighbor not in self.visited:
+                distanceTraveled += dist
+                result = self.distanceTo(neighbor,end,distanceTraveled)
 
+                print("result", result)
+                if result != None:
+                    if self.shortestPath == None:
+                        self.shortestPath = result
+                    elif result < self.shortestPath:
+                        self.shortestPath = result
             
 def main():
     graph = Graph()
@@ -76,8 +97,14 @@ def main():
     graph.connectNewNeighbors(nodeB,nodeD,4)
     graph.connectNewNeighbors(nodeC,nodeD,3)
     graph.changeCurrent(nodeA)
-    nodies = graph.shortestPathFromCurrent(nodeD)
-    print(graph.shortestNodes)
+    # graph.shortestPathFromCurrent(nodeD)
+    # print(graph.shortestNodes)
+
+    #print(graph.nodes[0].neighbors[nodeB])
+
+    graph.distanceTo(nodeA,nodeD)
+
+    print(graph.shortestPath)
 
 
 

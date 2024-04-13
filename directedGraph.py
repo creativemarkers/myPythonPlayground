@@ -98,6 +98,28 @@ class DirectedGraph():
             for neighbor in self.adjacencyList[current]:
                 queue.append(neighbor)
 
+
+    def dfsRecursiveHasPath(self,source,dest):
+        print(source, dest)
+        if source == dest:
+            return True
+        for neighbor in self.adjacencyList[source]:
+            result = self.dfsRecursiveHasPath(neighbor, dest)
+            if result == True:
+                return True
+        return False
+    
+    def bfsHasPath(self, source, dest):
+
+        queue = [source]
+        while queue:
+            current = queue.pop(0)
+            if current == dest:
+                return True
+            else:
+                for neighbor in self.adjacencyList[current]:
+                    queue.append(neighbor)
+        return False
         
 def main():
 
@@ -132,7 +154,10 @@ def main():
     #dGraph.depthFirstTraversal(nodeList[0])
     #dGraph.breadthFirstTraversal(startNode=nodeList[0])
     #dGraph.dfsRecursive(nodeList[0])
-    dGraph.bfsIteratively(nodeList[0])
+    #dGraph.bfsIteratively(nodeList[0])
+    print(dGraph.dfsRecursiveHasPath(nodeList[0],nodeList[5]))
+    print(dGraph.bfsHasPath(nodeList[0],nodeList[3]))
+
     #print(dGraph.queue)
 
     #print(dGraph.adjacencyList)
