@@ -37,8 +37,6 @@ def hasher(pw, salt=None):
 
     return print(fCharArr)
 
-
-
 def saltGenerator():
 
     salt = random.uniform(0.000,1)
